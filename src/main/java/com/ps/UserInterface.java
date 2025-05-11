@@ -5,15 +5,27 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class UserInterface {
-    private Dealership dealership = new Dealership();
+    private Dealership dealership;
     private Scanner scanner = new Scanner(System.in);
 
     private void init() {
         dealership = DealershipFileManager.getDealership();
+        if (dealership == null) {
+            System.out.println("Dealership data not found. Please enter dealership details.");
+            System.out.print("Enter Dealership Name: ");
+            String name = scanner.nextLine();
+            System.out.print("Enter Dealership Address: ");
+            String address = scanner.nextLine();
+            System.out.print("Enter Dealership Phone: ");
+            String phone = scanner.nextLine();
+            dealership = new Dealership(name, address, phone);
+            DealershipFileManager.saveDealership(dealership);
+            System.out.println("New dealership created and saved.");
+        }
     }
 
     public UserInterface() {
-        // Constructor
+        init();
     }
 
     public void display() {
@@ -35,7 +47,14 @@ public class UserInterface {
             System.out.println("0. Exit");
 
             System.out.println("Command: ");
-            mainMenuCommand = scanner.nextInt();
+            if (scanner.hasNextInt()) {
+                mainMenuCommand = scanner.nextInt();
+                scanner.nextLine(); // consume newline
+            } else {
+                System.out.println("Invalid input! Please enter a number.");
+                scanner.nextLine(); // Clear the invalid input
+                continue; // Restart the loop
+            }
 
             switch (mainMenuCommand){
                 case 1:
@@ -71,7 +90,7 @@ public class UserInterface {
         double maxPrice = scanner.nextDouble();
         scanner.nextLine(); // consume newline
 
-        ArrayList<Vehicle> vehicles = dealership.getAllVehicle();
+        ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
         for (Vehicle vehicle : vehicles) {
             if (vehicle.getPrice() <= maxPrice) {
                 System.out.println(vehicle);
@@ -86,7 +105,7 @@ public class UserInterface {
         System.out.print("Enter model: ");
         String model = scanner.nextLine();
 
-        ArrayList<Vehicle> vehicles = dealership.getAllVehicle();
+        ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
         for (Vehicle vehicle : vehicles) {
             if (vehicle.getMake().equalsIgnoreCase(make) && vehicle.getModel().equalsIgnoreCase(model)) {
                 System.out.println(vehicle);
@@ -100,7 +119,7 @@ public class UserInterface {
         int year = scanner.nextInt();
         scanner.nextLine(); // consume newline
 
-        ArrayList<Vehicle> vehicles = dealership.getAllVehicle();
+        ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
         for (Vehicle vehicle : vehicles) {
             if (vehicle.getYear() == year) {
                 System.out.println(vehicle);
@@ -113,7 +132,7 @@ public class UserInterface {
         System.out.print("Enter color: ");
         String color = scanner.nextLine();
 
-        ArrayList<Vehicle> vehicles = dealership.getAllVehicle();
+        ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
         for (Vehicle vehicle : vehicles) {
             if (vehicle.getColor().equalsIgnoreCase(color)) {
                 System.out.println(vehicle);
@@ -127,7 +146,7 @@ public class UserInterface {
         int maxMileage = scanner.nextInt();
         scanner.nextLine(); // consume newline
 
-        ArrayList<Vehicle> vehicles = dealership.getAllVehicle();
+        ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
         for (Vehicle vehicle : vehicles) {
             if (vehicle.getOdometer() <= maxMileage) {
                 System.out.println(vehicle);
@@ -140,7 +159,7 @@ public class UserInterface {
         System.out.print("Enter vehicle type: ");
         String type = scanner.nextLine();
 
-        ArrayList<Vehicle> vehicles = dealership.getAllVehicle();
+        ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
         for (Vehicle vehicle : vehicles) {
             if (vehicle.getType().equalsIgnoreCase(type)) {
                 System.out.println(vehicle);
@@ -150,7 +169,7 @@ public class UserInterface {
 
     public void processGetAllVehiclesRequest() {
         // Process request to get all vehicles
-        ArrayList<Vehicle> vehicles = dealership.getAllVehicle();
+        ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
         if (vehicles.isEmpty()) {
             System.out.println("No vehicles available.");
         } else {
@@ -205,7 +224,7 @@ public class UserInterface {
         int vin = scanner.nextInt();
         scanner.nextLine();
 
-        ArrayList<Vehicle> vehicles = dealership.getAllVehicle();
+        ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
         boolean found = false;
 
         for (Vehicle vehicle : vehicles) {
@@ -221,6 +240,5 @@ public class UserInterface {
         if (!found) {
             System.out.println("Vehicle not found.");
         }
-    }
     }
 }
