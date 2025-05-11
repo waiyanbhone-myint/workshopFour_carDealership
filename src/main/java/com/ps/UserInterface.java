@@ -1,6 +1,5 @@
 package com.ps;
 
-import javax.swing.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -8,6 +7,7 @@ public class UserInterface {
     private Dealership dealership;
     private Scanner scanner = new Scanner(System.in);
 
+    // Initialization to load dealership data
     private void init() {
         dealership = DealershipFileManager.getDealership();
         if (dealership == null) {
@@ -24,29 +24,30 @@ public class UserInterface {
         }
     }
 
+    // Constructor
     public UserInterface() {
         init();
     }
 
+    // Main menu display and input handling
     public void display() {
-        // Create main menu
         System.out.println("Welcome to Dealership Program.");
 
-        int mainMenuCommand;
-
-        do{
+        while (true) {
+            System.out.println("\nMain Menu:");
             System.out.println("1. Get by price");
             System.out.println("2. Get by make/model");
             System.out.println("3. Get by year");
             System.out.println("4. Get by color");
             System.out.println("5. Get by mileage");
             System.out.println("6. Get by type");
-            System.out.println("7. Get all");
+            System.out.println("7. Get all vehicles");
             System.out.println("8. Add vehicle");
             System.out.println("9. Remove vehicle");
             System.out.println("0. Exit");
+            System.out.print("Command: ");
 
-            System.out.println("Command: ");
+            int mainMenuCommand;
             if (scanner.hasNextInt()) {
                 mainMenuCommand = scanner.nextInt();
                 scanner.nextLine(); // consume newline
@@ -56,39 +57,30 @@ public class UserInterface {
                 continue; // Restart the loop
             }
 
-            switch (mainMenuCommand){
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-                case 8:
-                    break;
-                case 9:
-                    break;
-                case 0:
-                    System.out.println("Exiting.....");
-                    break;
-                default:
-                    System.out.println("Command not found, try again.");
+            switch (mainMenuCommand) {
+                case 1 -> processGetByPriceRequest();
+                case 2 -> processGetByMakeModelRequest();
+                case 3 -> processGetByYearRequest();
+                case 4 -> processGetByColorRequest();
+                case 5 -> processGetByMileageRequest();
+                case 6 -> processGetByVehicleTypeRequest();
+                case 7 -> processGetAllVehiclesRequest();
+                case 8 -> processAddVehicleRequest();
+                case 9 -> processRemoveVehicleRequest();
+                case 0 -> {
+                    System.out.println("Exiting...");
+                    return; // Exit the program
+                }
+                default -> System.out.println("Command not found, try again.");
             }
-        }while (mainMenuCommand !=0 );
+        }
     }
 
+    // Get vehicles by price
     public void processGetByPriceRequest() {
-        // Process request to get vehicles by price
         System.out.print("Enter maximum price: ");
         double maxPrice = scanner.nextDouble();
-        scanner.nextLine(); // consume newline
+        scanner.nextLine();
 
         ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
         for (Vehicle vehicle : vehicles) {
@@ -96,10 +88,11 @@ public class UserInterface {
                 System.out.println(vehicle);
             }
         }
+        pause();
     }
 
+    // Get vehicles by make and model
     public void processGetByMakeModelRequest() {
-        // Process request to get vehicles by make and model
         System.out.print("Enter make: ");
         String make = scanner.nextLine();
         System.out.print("Enter model: ");
@@ -111,13 +104,14 @@ public class UserInterface {
                 System.out.println(vehicle);
             }
         }
+        pause();
     }
 
+    // Get vehicles by year
     public void processGetByYearRequest() {
-        // Process request to get vehicles by year
         System.out.print("Enter year: ");
         int year = scanner.nextInt();
-        scanner.nextLine(); // consume newline
+        scanner.nextLine();
 
         ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
         for (Vehicle vehicle : vehicles) {
@@ -125,10 +119,11 @@ public class UserInterface {
                 System.out.println(vehicle);
             }
         }
+        pause();
     }
 
+    // Get vehicles by color
     public void processGetByColorRequest() {
-        // Process request to get vehicles by color
         System.out.print("Enter color: ");
         String color = scanner.nextLine();
 
@@ -138,13 +133,14 @@ public class UserInterface {
                 System.out.println(vehicle);
             }
         }
+        pause();
     }
 
+    // Get vehicles by mileage
     public void processGetByMileageRequest() {
-        // Process request to get vehicles by mileage
         System.out.print("Enter maximum mileage: ");
         int maxMileage = scanner.nextInt();
-        scanner.nextLine(); // consume newline
+        scanner.nextLine();
 
         ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
         for (Vehicle vehicle : vehicles) {
@@ -152,10 +148,11 @@ public class UserInterface {
                 System.out.println(vehicle);
             }
         }
+        pause();
     }
 
+    // Get vehicles by type
     public void processGetByVehicleTypeRequest() {
-        // Process request to get vehicles by vehicle type
         System.out.print("Enter vehicle type: ");
         String type = scanner.nextLine();
 
@@ -165,10 +162,11 @@ public class UserInterface {
                 System.out.println(vehicle);
             }
         }
+        pause();
     }
 
+    // Display all vehicles
     public void processGetAllVehiclesRequest() {
-        // Process request to get all vehicles
         ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
         if (vehicles.isEmpty()) {
             System.out.println("No vehicles available.");
@@ -177,36 +175,29 @@ public class UserInterface {
                 System.out.println(vehicle);
             }
         }
+        pause();
     }
 
+    // Add a new vehicle
     public void processAddVehicleRequest() {
-        // Process request to add a new vehicle
         System.out.println("Adding a new vehicle:");
-
         System.out.print("Enter VIN: ");
         int vin = scanner.nextInt();
-        scanner.nextLine(); // consume newline
-
+        scanner.nextLine();
         System.out.print("Enter year: ");
         int year = scanner.nextInt();
         scanner.nextLine();
-
         System.out.print("Enter make: ");
         String make = scanner.nextLine();
-
         System.out.print("Enter model: ");
         String model = scanner.nextLine();
-
         System.out.print("Enter type: ");
         String type = scanner.nextLine();
-
         System.out.print("Enter color: ");
         String color = scanner.nextLine();
-
         System.out.print("Enter mileage: ");
         int odometer = scanner.nextInt();
         scanner.nextLine();
-
         System.out.print("Enter price: ");
         double price = scanner.nextDouble();
         scanner.nextLine();
@@ -214,12 +205,12 @@ public class UserInterface {
         Vehicle newVehicle = new Vehicle(vin, year, make, model, type, color, odometer, price);
         dealership.addVehicle(newVehicle);
         DealershipFileManager.saveDealership(dealership);
-
         System.out.println("Vehicle added successfully!");
+        pause();
     }
 
+    // Remove a vehicle
     public void processRemoveVehicleRequest() {
-        // Process request to remove a vehicle
         System.out.print("Enter VIN to remove: ");
         int vin = scanner.nextInt();
         scanner.nextLine();
@@ -227,18 +218,24 @@ public class UserInterface {
         ArrayList<Vehicle> vehicles = dealership.getAllVehicles();
         boolean found = false;
 
-        for (Vehicle vehicle : vehicles) {
-            if (vehicle.getVin() == vin) {
-                vehicles.remove(vehicle);
+        for (int i = 0; i < vehicles.size(); i++) {
+            if (vehicles.get(i).getVin() == vin) {
+                vehicles.remove(i);
                 found = true;
                 System.out.println("Vehicle removed successfully!");
                 DealershipFileManager.saveDealership(dealership);
                 break;
             }
         }
-
         if (!found) {
             System.out.println("Vehicle not found.");
         }
+        pause();
+    }
+
+    // Pause to let user see the output
+    private void pause() {
+        System.out.println("Press Enter to return to the menu...");
+        scanner.nextLine();
     }
 }
